@@ -15,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(TeamServiceInterface::class, TeamService::class, );
-        $this->app->register(TeamRepositoryInterface::class, TeamRepository::class, );
+        $this->app->bind(TeamServiceInterface::class, TeamService::class, );
+        $this->app->bind(TeamRepositoryInterface::class, TeamRepository::class, );
     }
 
     /**
