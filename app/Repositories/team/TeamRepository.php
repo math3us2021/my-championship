@@ -3,6 +3,7 @@
 namespace App\Repositories\team;
 
 
+use App\DTO\TeamDTO;
 use App\Models\Team;
 use App\Repositories\Protocols\TeamRepositoryInterface;
 
@@ -19,9 +20,9 @@ class TeamRepository implements TeamRepositoryInterface
         return $team ? $team->toArray() : null;
     }
 
-    public function create(string $name): ?array
+    public function create(TeamDTO $data): ?array
     {
-        $team = Team::create(['name' => $name]);
+        $team = Team::create(['name' => $data->name]);
         return $team ? $team->toArray() : null;
     }
 }

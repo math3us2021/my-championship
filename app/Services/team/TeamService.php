@@ -2,6 +2,7 @@
 
 namespace App\Services\team;
 
+use App\DTO\TeamDTO;
 use App\Http\Protocols\team\TeamServiceInterface;
 use App\Repositories\Protocols\TeamRepositoryInterface;
 
@@ -24,8 +25,8 @@ class TeamService implements TeamServiceInterface
     }
 
 
-    public function store(string $name): array
+    public function create(TeamDTO $data): array
     {
-        return $this->teamRepository->create($name);
+        return $this->teamRepository->create($data);
     }
 }
