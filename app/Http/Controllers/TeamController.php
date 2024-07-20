@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\ConvenioDTO;
 use App\DTO\TeamDTO;
+use App\Exceptions\InvalidParamsExceptions;
 use App\Exceptions\MissingParamsExceptions;
 use App\Helpers\HttpResponseHelper;
 use App\Http\Protocols\team\TeamServiceInterface;
@@ -35,7 +36,7 @@ class TeamController extends Controller
         }
     }
 
-    public function store(Request $request, string $id)
+    public function store(Request $request, string $id = null)
     {
         try {
             $requiredFields = ['name'];
@@ -52,10 +53,13 @@ class TeamController extends Controller
 
             if ($id) {
                 $resp = $this->teamService->update($id, $teamDTO);
+                if ($resp === null) {
+                    return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+                }
             } else {
                 $resp = $this->teamService->create($teamDTO);
+                if ($resp === null) return HttpResponseHelper::serverError();
             }
-            if ($resp === null) return HttpResponseHelper::serverError();
             return HttpResponseHelper::ok($resp);
 
         } catch (\Exception $e) {

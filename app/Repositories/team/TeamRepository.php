@@ -25,4 +25,11 @@ class TeamRepository implements TeamRepositoryInterface
         $team = Team::create(['name' => $data->name]);
         return $team ? $team->toArray() : null;
     }
+
+    public function update(string $id, TeamDTO $data): ?array
+    {
+        $team = Team::find($id);
+        $team->update(['name' => $data->name]);
+        return $team ? $team->toArray() : null;
+    }
 }
