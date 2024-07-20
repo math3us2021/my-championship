@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\TeamsController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/test', function () {
     return response()->json(['message' => 'API Laravel está funcionando corretamente!!!!!']);
 });
+
+Route::get('/teams', [TeamController::class, 'index']);
+Route::get('/teams/{id}', [TeamController::class, 'show']);
+Route::post('/teams', [TeamController::class, 'store']);
+Route::put('/teams/{id}', 'Teams@update');
+Route::delete('/teams/{id}', 'Teams@destroy');
+
 

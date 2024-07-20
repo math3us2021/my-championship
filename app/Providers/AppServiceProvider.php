@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Http\Protocols\teams\TeamsInterface;
-use App\Repositories\Protocols\TeamsRepositoryInterface;
-use App\Repositories\Teams\TeamsRepository;
-use App\Services\teams\TeamsService;
+use App\Http\Protocols\team\TeamServiceInterface;
+use App\Services\team\TeamService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        $this->app->register(TeamServiceInterface::class, TeamService::class, );
     }
 
     /**
