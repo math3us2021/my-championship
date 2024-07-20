@@ -23,10 +23,9 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API Laravel está funcionando corretamente!!!!!']);
 });
 
-Route::get('/teams', [TeamController::class, 'index']);
-Route::get('/teams/{id}', [TeamController::class, 'show']);
+Route::get('/teams/{id?}', [TeamController::class, 'index']);
 Route::post('/teams', [TeamController::class, 'store']);
-Route::put('/teams/{id}', 'Teams@update');
+Route::put('/teams/{id}', [TeamController::class, 'store']);
 Route::delete('/teams/{id}', 'Teams@destroy');
 
 

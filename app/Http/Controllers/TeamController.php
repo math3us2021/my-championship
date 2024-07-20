@@ -19,10 +19,14 @@ class TeamController extends Controller
         $this->teamService = $teamService;
     }
 
-    public function index()
+    public function index($id = null)
     {
         try {
-            $dataTeam = $this->teamService->get();
+            if ($id) {
+                $dataTeam = $this->teamService->get($id);
+            } else {
+                $dataTeam = $this->teamService->get();
+            }
             if ($dataTeam === null) return HttpResponseHelper::serverError();
             return HttpResponseHelper::ok($dataTeam);
 
@@ -31,20 +35,7 @@ class TeamController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        try {
-            $dataTeam = $this->teamService->get($id);
-            if ($dataTeam === null) return HttpResponseHelper::serverError();
-            return HttpResponseHelper::ok($dataTeam);
-
-
-        } catch (Exception $e) {
-            return HttpResponseHelper::serverError();
-        }
-    }
-
-    public function store(Request $request)
+    public function store(Request $request, string $id)
     {
         try {
             $requiredFields = ['name'];
@@ -53,14 +44,17 @@ class TeamController extends Controller
                     return HttpResponseHelper::badRequest(new MissingParamsExceptions($field));
                 }
             }
-
             $this->validate($request, [
                 'name' => 'required|string',
             ]);
 
             $teamDTO = TeamDTO::fromRequest($request);
 
-            $resp = $this->teamService->create($teamDTO);
+            if ($id) {
+                $resp = $this->teamService->update($id, $teamDTO);
+            } else {
+                $resp = $this->teamService->create($teamDTO);
+            }
             if ($resp === null) return HttpResponseHelper::serverError();
             return HttpResponseHelper::ok($resp);
 

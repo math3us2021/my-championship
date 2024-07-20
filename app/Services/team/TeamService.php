@@ -29,4 +29,9 @@ class TeamService implements TeamServiceInterface
     {
         return $this->teamRepository->create($data);
     }
+
+    public function update(string $id, TeamDTO $data): array
+    {
+        // TODO: Implement update() method.
+    }
 }
