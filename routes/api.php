@@ -26,6 +26,6 @@ Route::get('/test', function () {
 Route::get('/teams/{id?}', [TeamController::class, 'index']);
 Route::post('/teams', [TeamController::class, 'store']);
 Route::put('/teams/{id}', [TeamController::class, 'store']);
-Route::delete('/teams/{id}', 'Teams@destroy');
+Route::delete('/teams/{id}', [TeamController::class, 'destroy']);
 
 

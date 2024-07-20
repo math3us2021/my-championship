@@ -23,8 +23,9 @@ class HttpResponseHelper
     }
 
 
-    public static function ok($data): JsonResponse
+    public static function ok($data, $params): JsonResponse
     {
-        return response()->json($data, Response::HTTP_OK);
+        return response()->json($data, $params);
     }
+
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\ConvenioDTO;
 use App\DTO\TeamDTO;
 use App\Exceptions\InvalidParamsExceptions;
 use App\Exceptions\MissingParamsExceptions;
@@ -10,6 +9,7 @@ use App\Helpers\HttpResponseHelper;
 use App\Http\Protocols\team\TeamServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TeamController extends Controller
 {
@@ -29,7 +29,7 @@ class TeamController extends Controller
                 $dataTeam = $this->teamService->get();
             }
             if ($dataTeam === null) return HttpResponseHelper::serverError();
-            return HttpResponseHelper::ok($dataTeam);
+            return HttpResponseHelper::ok($dataTeam,Response::HTTP_OK );
 
         } catch (Exception $e) {
             return HttpResponseHelper::serverError();
@@ -53,18 +53,30 @@ class TeamController extends Controller
 
             if ($id) {
                 $resp = $this->teamService->update($id, $teamDTO);
-                if ($resp === null) {
-                    return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
-                }
+                if ($resp === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+                return HttpResponseHelper::ok($resp, Response::HTTP_OK);
             } else {
                 $resp = $this->teamService->create($teamDTO);
                 if ($resp === null) return HttpResponseHelper::serverError();
+                return HttpResponseHelper::ok($resp, Response::HTTP_CREATED);
             }
-            return HttpResponseHelper::ok($resp);
+
 
         } catch (\Exception $e) {
             return HttpResponseHelper::serverError();
         }
     }
 
+    public function destroy(string $id)
+    {
+        try {
+            $deleteTeam = $this->teamService->delete($id);
+            if ($deleteTeam === null) {
+                return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+            }
+            return HttpResponseHelper::ok('Team deleted successfully', Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return HttpResponseHelper::serverError();
+        }
+    }
 }

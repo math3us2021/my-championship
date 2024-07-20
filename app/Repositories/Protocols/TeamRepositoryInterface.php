@@ -11,4 +11,5 @@ interface TeamRepositoryInterface
     public function getById(string $id): ?array;
     public function create(TeamDTO $data): ?array;
     public function update(string $id, TeamDTO $data): ?array;
+    public function delete(string $id): ?bool;
 }

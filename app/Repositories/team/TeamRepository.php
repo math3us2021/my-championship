@@ -29,7 +29,16 @@ class TeamRepository implements TeamRepositoryInterface
     public function update(string $id, TeamDTO $data): ?array
     {
         $team = Team::find($id);
+        if (!$team) return null;
         $team->update(['name' => $data->name]);
         return $team ? $team->toArray() : null;
+    }
+
+
+    public function delete(string $id): ?bool
+    {
+        $team = Team::find($id);
+        if (!$team) return null;
+        return $team ? $team->delete() : false;
     }
 }

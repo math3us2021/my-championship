@@ -8,6 +8,6 @@ interface TeamServiceInterface
 {
     public function get(string $id = null): array;
     public function create(TeamDTO $data): array;
-    public function update(string $id, TeamDTO $data): array;
-//    public function delete(string $id): array;
+    public function update(string $id, TeamDTO $data): ?array;
+    public function delete(string $id): ?bool;
 }

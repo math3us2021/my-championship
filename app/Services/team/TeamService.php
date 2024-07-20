@@ -30,8 +30,13 @@ class TeamService implements TeamServiceInterface
         return $this->teamRepository->create($data);
     }
 
-    public function update(string $id, TeamDTO $data): array
+    public function update(string $id, TeamDTO $data): ?array
     {
         return $this->teamRepository->update($id, $data);
+    }
+
+    public function delete(string $id): bool
+    {
+        return $this->teamRepository->delete($id);
     }
 }
