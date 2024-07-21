@@ -72,7 +72,7 @@ class TeamController extends Controller
             if ($deleteTeam === null) {
                 return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
             }
-            return HttpResponseHelper::ok('Team deleted successfully', Response::HTTP_OK);
+            return HttpResponseHelper::ok('Team deleted successfully', Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
             return HttpResponseHelper::serverError();
         }

@@ -126,7 +126,6 @@ it('should return 201 if a team is created successfully', function () {
 
 
 it('should return 400 if the team to update is not found', function () {
-
     mockResponseFactory(400);
 
     $request = Request::create('/teams/1', 'PUT', ['name' => 'Updated Team']);
@@ -137,4 +136,58 @@ it('should return 400 if the team to update is not found', function () {
     $response = $controller->store($request, '1');
 
     expect($response->status())->toBe(Response::HTTP_BAD_REQUEST);
+});
+
+it('should return 500 create if an exception is thrown', function () {
+    mockResponseFactory(500);
+
+    $request = Request::create('/teams', 'POST', ['name' => 'Team A']);
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+    $teamService->shouldReceive('create')->andThrow(new \Exception('Some error'));
+
+    $controller = new TeamController($teamService);
+    $response = $controller->store($request);
+
+    expect($response->status())->toBe(Response::HTTP_INTERNAL_SERVER_ERROR);
+});
+
+it('should return 400 delete parmas incorrect', function () {
+    mockResponseFactory(400);
+
+    $request = Request::create('/teams/1', 'DELETE');
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+    $teamService->shouldReceive('delete')->once()->andReturnNull();
+
+    $controller = new TeamController($teamService);
+    $response = $controller->destroy($request);
+
+    expect($response->status())->toBe(Response::HTTP_BAD_REQUEST);
+});
+
+
+it('should return 500 delete if an exception is thrown', function () {
+    mockResponseFactory(500);
+
+    $request = Request::create('/teams/1', 'DELETE');
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+    $teamService->shouldReceive('delete')->once()->andThrow(new \Exception('Some error'));
+
+    $controller = new TeamController($teamService);
+    $response = $controller->destroy($request);
+
+    expect($response->status())->toBe(Response::HTTP_INTERNAL_SERVER_ERROR);
+});
+
+
+it('should return 204 if a team is deleted successfully', function () {
+    mockResponseFactory(204);
+
+    $request = Request::create('/teams/1', 'DELETE');
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+    $teamService->shouldReceive('delete')->once()->andReturn(true);
+
+    $controller = new TeamController($teamService);
+    $response = $controller->destroy($request);
+
+    expect($response->status())->toBe(Response::HTTP_NO_CONTENT);
 });
