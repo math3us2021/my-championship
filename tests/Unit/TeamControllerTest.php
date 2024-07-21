@@ -82,7 +82,7 @@ it('should getByID null return 400', function () {
 });
 
 it('should return 400 if required field name is missing', function () {
-    $errorMessage = 'The field name is missing.';
+    $errorMessage = 'The name field is required.';
     mockResponseFactory(400);
 
     $request = Request::create('/teams', 'POST', []);
@@ -90,9 +90,8 @@ it('should return 400 if required field name is missing', function () {
 
     $controller = new TeamController($teamService);
     $response = $controller->store($request);
-
     expect($response->status())->toBe(Response::HTTP_BAD_REQUEST)
-        ->and($response->getData(true)['error'])->toBe($errorMessage);
+        ->and($response->getData(true)['errors']['name'][0])->toBe($errorMessage);
 });
 
 

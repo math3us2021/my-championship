@@ -10,6 +10,7 @@ use App\Http\Protocols\team\TeamServiceInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class TeamController extends Controller
 {
@@ -38,12 +39,7 @@ class TeamController extends Controller
     public function store(Request $request, string $id = null)
     {
         try {
-            $requiredFields = ['name'];
-            foreach ($requiredFields as $field) {
-                if (!$request->has($field)) {
-                    return HttpResponseHelper::badRequest(new MissingParamsExceptions($field));
-                }
-            }
+
             $this->validate($request, [
                 'name' => 'required|string',
             ]);
@@ -61,6 +57,9 @@ class TeamController extends Controller
             }
 
 
+        } catch (ValidationException $e) {
+            $errors = $e->errors();
+            return HttpResponseHelper::badRequest($errors);
         } catch (\Exception $e) {
             return HttpResponseHelper::serverError();
         }

@@ -2,15 +2,26 @@
 
 namespace App\Helpers;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class HttpResponseHelper
 {
-    public static function badRequest(\Exception $error): JsonResponse
+    public static function badRequest($errors = null)
     {
+        if ($errors instanceof Exception) {
+            return response()->json([
+                'error' => $errors->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        } else if (is_array($errors)) {
+            return response()->json([
+                'errors' => $errors
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         return response()->json([
-            'error' => $error->getMessage(),
+            'error' => 'Bad Request'
         ], Response::HTTP_BAD_REQUEST);
     }
 
