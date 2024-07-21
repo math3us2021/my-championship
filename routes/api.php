@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChampionshipController;
+use App\Http\Controllers\PlayChampionshipController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,3 +35,4 @@ Route::post('/championship', [ChampionshipController::class, 'store']);
 Route::put('/championship/{id}', [ChampionshipController::class, 'store']);
 Route::delete('/championship/{id}', [ChampionshipController::class, 'destroy']);
 
+Route::post('/championship/start', [PlayChampionshipController::class, 'index']);

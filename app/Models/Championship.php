@@ -13,4 +13,9 @@ class Championship extends Model
         'id',
         'name',
     ];
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'championship_teams');
+    }
 }
