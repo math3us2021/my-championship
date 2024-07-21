@@ -11,9 +11,9 @@ class ChampionshipSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+        public function run(): void
     {
-        DB::table('teams')->insert([
+        $teams = [
             ['name' => 'Championship 1', 'created_at' => now()],
             ['name' => 'Championship 2', 'created_at' => now()],
             ['name' => 'Championship 3', 'created_at' => now()],
@@ -22,6 +22,10 @@ class ChampionshipSeeder extends Seeder
             ['name' => 'Championship 6', 'created_at' => now()],
             ['name' => 'Championship 7', 'created_at' => now()],
             ['name' => 'Championship 8', 'created_at' => now()],
-        ]);
+        ];
+
+        foreach ($teams as $team) {
+            DB::table('championships')->updateOrInsert(['name' => $team['name']], $team);
+        }
     }
 }
