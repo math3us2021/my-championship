@@ -1,5 +1,6 @@
 <?php
 
+use App\DTO\TeamDTO;
 use App\Http\Controllers\TeamController;
 use App\Http\Protocols\team\TeamServiceInterface;
 use App\Models\Team;
@@ -107,6 +108,21 @@ it('should return 400 if type name', function () {
         ->and($response->getData(true)['errors']['name'][0])->toBe($errorMessage);
 });
 
+it('should return 201 if a team is created successfully', function () {
+    $createdTeam = ['id' => 1, 'name' => 'Team A'];
+
+    mockResponseFactory(201, $createdTeam);
+
+    $request = Request::create('/teams', 'POST', ['name' => 'Team A']);
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+    $teamService->shouldReceive('create')->once()->andReturn($createdTeam);
+
+    $controller = new TeamController($teamService);
+    $response = $controller->store($request);
+
+    expect($response->status())->toBe(Response::HTTP_CREATED)
+        ->and($response->getData(true))->toBe($createdTeam);
+});
 
 
 
