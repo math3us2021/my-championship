@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\TeamDTO;
+use App\DTO\ChampionshipDTO;
 use App\Exceptions\InvalidParamsExceptions;
 use App\Helpers\HttpResponseHelper;
 use App\Http\Protocols\championship\ChampionshipServiceInterface;
@@ -42,11 +42,11 @@ class ChampionshipController extends Controller
                 'name' => 'required|string',
             ]);
 
-            $teamDTO = TeamDTO::fromRequest($request);
+            $teamDTO = ChampionshipDTO::fromRequest($request);
 
             if ($id) {
                 $resp = $this->championshipService->update($id, $teamDTO);
-                if ($resp === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+                if ($resp === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Championship not found'));
                 return HttpResponseHelper::ok($resp, Response::HTTP_OK);
             } else {
                 $resp = $this->championshipService->create($teamDTO);
@@ -68,9 +68,9 @@ class ChampionshipController extends Controller
         try {
             $deleteTeam = $this->championshipService->delete($id);
             if ($deleteTeam === null) {
-                return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+                return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Championship not found'));
             }
-            return HttpResponseHelper::ok('Team deleted successfully', Response::HTTP_NO_CONTENT);
+            return HttpResponseHelper::ok('', Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
             return HttpResponseHelper::serverError();
         }
