@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\DTO\TeamDTO;
 use App\Exceptions\InvalidParamsExceptions;
-use App\Exceptions\MissingParamsExceptions;
 use App\Helpers\HttpResponseHelper;
 use App\Http\Protocols\team\TeamServiceInterface;
 use Exception;
