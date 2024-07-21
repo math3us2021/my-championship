@@ -111,7 +111,7 @@ it('should return 400 if type name', function () {
 it('should return 201 if a team is created successfully', function () {
     $createdTeam = ['id' => 1, 'name' => 'Team A'];
 
-    mockResponseFactory(201, $createdTeam);
+    mockResponseFactory(201);
 
     $request = Request::create('/teams', 'POST', ['name' => 'Team A']);
     $teamService = Mockery::mock(TeamServiceInterface::class);
@@ -125,4 +125,16 @@ it('should return 201 if a team is created successfully', function () {
 });
 
 
+it('should return 400 if the team to update is not found', function () {
 
+    mockResponseFactory(400);
+
+    $request = Request::create('/teams/1', 'PUT', ['name' => 'Updated Team']);
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+    $teamService->shouldReceive('update')->once()->with('1', Mockery::type(TeamDTO::class))->andReturnNull();
+
+    $controller = new TeamController($teamService);
+    $response = $controller->store($request, '1');
+
+    expect($response->status())->toBe(Response::HTTP_BAD_REQUEST);
+});
