@@ -6,6 +6,7 @@ use App\Models\Team;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 uses(TestCase::class);
@@ -79,4 +80,21 @@ it('should getByID null return 400', function () {
 
     expect($response->status())->toBe(Response::HTTP_BAD_REQUEST);
 });
+
+it('should return 400 if required field name is missing', function () {
+    $errorMessage = 'The field name is missing.';
+    mockResponseFactory(400);
+
+    $request = Request::create('/teams', 'POST', []);
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+
+    $controller = new TeamController($teamService);
+    $response = $controller->store($request);
+
+    expect($response->status())->toBe(Response::HTTP_BAD_REQUEST)
+        ->and($response->getData(true)['error'])->toBe($errorMessage);
+});
+
+
+
 
