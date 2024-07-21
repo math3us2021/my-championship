@@ -94,6 +94,19 @@ it('should return 400 if required field name is missing', function () {
         ->and($response->getData(true)['errors']['name'][0])->toBe($errorMessage);
 });
 
+it('should return 400 if type name', function () {
+    $errorMessage = 'The name field must be a string.';
+    mockResponseFactory(400);
+
+    $request = Request::create('/teams', 'POST', ['name' => 123]);
+    $teamService = Mockery::mock(TeamServiceInterface::class);
+
+    $controller = new TeamController($teamService);
+    $response = $controller->store($request);
+    expect($response->status())->toBe(Response::HTTP_BAD_REQUEST)
+        ->and($response->getData(true)['errors']['name'][0])->toBe($errorMessage);
+});
+
 
 
 
