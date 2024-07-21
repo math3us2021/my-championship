@@ -22,24 +22,15 @@ function mockResponseFactory(int $statusMock)
     app()->instance('Illuminate\Contracts\Routing\ResponseFactory', $responseFactory);
 }
 
-it('should return 500 when an exception is thrown', function () {
-    mockResponseFactory(500);
+it('should return 400 if type name', function () {
+    $errorMessage = 'The name field must be a string.';
+    mockResponseFactory(422);
 
-    $mock = Mockery::mock(TeamServiceInterface::class);
-    $mock->shouldReceive('get')->andThrow(new \Exception('An error occurred'));
-    $controller = new TeamController($mock);
-    $response = $controller->index();
+    $request = Request::create('/championship/play', 'POST', []);
+    $teamService = Mockery::mock(TeamServiceInterface::class);
 
-    expect($response->status())->toBe(Response::HTTP_INTERNAL_SERVER_ERROR);
-});
-
-it('should empty array return 200', function () {
-    mockResponseFactory(200);
-
-    $mock = Mockery::mock(TeamServiceInterface::class);
-    $mock->shouldReceive('get')->once()->andReturn([]);
-    $controller = new TeamController($mock);
-    $response = $controller->index();
-
-    expect($response->status())->toBe(Response::HTTP_OK);
+    $controller = new TeamController($teamService);
+    $response = $controller->store($request);
+    expect($response->status())->toBe(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->and($response->getData(true)['errors']['name'][0])->toBe($errorMessage);
 });
