@@ -35,4 +35,4 @@ Route::post('/championship', [ChampionshipController::class, 'store']);
 Route::put('/championship/{id}', [ChampionshipController::class, 'store']);
 Route::delete('/championship/{id}', [ChampionshipController::class, 'destroy']);
 
-Route::post('/championship/start', [PlayChampionshipController::class, 'index']);
+Route::post('/championship/play', [PlayChampionshipController::class, 'index']);
