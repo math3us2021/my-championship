@@ -25,6 +25,7 @@ class TeamController extends Controller
         try {
             if ($id) {
                 $dataTeam = $this->teamService->get($id);
+                if ($dataTeam === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
             } else {
                 $dataTeam = $this->teamService->get();
             }

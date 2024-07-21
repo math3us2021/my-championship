@@ -14,11 +14,10 @@ class TeamService implements TeamServiceInterface
         $this->teamRepository = $teamRepository;
     }
 
-    public function get(string $id = null): array
+    public function get(string $id = null): ?array
     {
         if ($id) {
-            $team = $this->teamRepository->getById($id);
-            return $team ? [$team] : [];
+            return $this->teamRepository->getById($id);
         }
 
         return $this->teamRepository->getAll();
