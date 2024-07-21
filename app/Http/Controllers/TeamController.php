@@ -28,9 +28,7 @@ class TeamController extends Controller
             } else {
                 $dataTeam = $this->teamService->get();
             }
-            if ($dataTeam === null) return HttpResponseHelper::serverError();
             return HttpResponseHelper::ok($dataTeam,Response::HTTP_OK );
-
         } catch (Exception $e) {
             return HttpResponseHelper::serverError();
         }
