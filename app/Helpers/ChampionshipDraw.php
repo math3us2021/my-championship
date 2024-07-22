@@ -16,8 +16,8 @@ class ChampionshipDraw
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
-//        dd('tes');
         return json_decode($process->getOutput(), true);
+
     }
 
     public function shuffleTeams(array $teams): array
@@ -60,5 +60,18 @@ class ChampionshipDraw
         }
 
         return $winners;
+    }
+
+    public function pointsGenerate(array $data)
+    {
+        foreach ($data as $game) {
+            $team1 = $game['team1_score'];
+            $team12 = $game['team2_score'];
+        }
+    }
+
+    private function point(int $golsfeats, int $golsTaken)
+    {
+        $positive = $golsfeats * 1;
     }
 }

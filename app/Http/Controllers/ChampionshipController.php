@@ -53,8 +53,6 @@ class ChampionshipController extends Controller
                 if ($resp === null) return HttpResponseHelper::serverError();
                 return HttpResponseHelper::ok($resp, Response::HTTP_CREATED);
             }
-
-
         } catch (ValidationException $e) {
             $errors = $e->errors();
             return HttpResponseHelper::badRequest($errors);

@@ -18,4 +18,8 @@ class Championship extends Model
     {
         return $this->belongsToMany(Team::class, 'championship_teams');
     }
+    public function matches()
+    {
+        return $this->hasMany(MatchesPlayed::class);
+    }
 }

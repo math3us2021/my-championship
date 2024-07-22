@@ -6,7 +6,9 @@ use App\Http\Protocols\championship\ChampionshipServiceInterface;
 use App\Http\Protocols\playchampioship\PlayChampionshipServiceInterface;
 use App\Http\Protocols\team\TeamServiceInterface;
 use App\Repositories\champioship\ChampionshipRepository;
+use App\Repositories\playchampionship\PlayChampionshipRepository;
 use App\Repositories\Protocols\ChampionshipRepositoryInterface;
+use App\Repositories\Protocols\PlayChampionshipRepositoryInterface;
 use App\Repositories\Protocols\TeamRepositoryInterface;
 use App\Repositories\team\TeamRepository;
 use App\Services\championship\ChampionshipService;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ChampionshipServiceInterface::class, ChampionshipService::class, );
         $this->app->bind(ChampionshipRepositoryInterface::class, ChampionshipRepository::class, );
         $this->app->bind(PlayChampionshipServiceInterface::class, PlayChampionshipService::class, );
+        $this->app->bind(PlayChampionshipRepositoryInterface::class, PlayChampionshipRepository::class, );
     }
 
     /**
