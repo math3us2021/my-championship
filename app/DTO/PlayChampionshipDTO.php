@@ -4,17 +4,17 @@ namespace App\DTO;
 
 use Illuminate\Http\Request;
 
-class playChampionshipDTO
+class PlayChampionshipDTO
 {
     public function __construct(public string $championshipId, public array $teams)
     {}
 
-
     public static function fromRequest(Request $request): self
     {
+        $data = $request->json()->all();
         return new self(
-            $request->input('championshipId'),
-            $request->input('teams')
+            $data['championship_id'],
+            $data['teams']
         );
     }
 

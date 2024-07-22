@@ -4,9 +4,9 @@ namespace App\Http\Protocols\playchampioship;
 
 
 
-use App\DTO\playChampionshipDTO;
+use App\DTO\PlayChampionshipDTO;
 
 interface PlayChampionshipServiceInterface
 {
-    public function create(playChampionshipDTO $data): array;
+    public function create(PlayChampionshipDTO $data): array;
 }

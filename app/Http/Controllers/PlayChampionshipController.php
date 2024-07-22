@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\InvalidParamsExceptions;
+use App\DTO\PlayChampionshipDTO;
 use App\Helpers\HttpResponseHelper;
 use App\Http\Protocols\playchampioship\PlayChampionshipServiceInterface;
 use App\Http\Requests\StoreChampionshipRequest;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
@@ -21,22 +20,13 @@ class PlayChampionshipController extends Controller
 
     public function index(StoreChampionshipRequest $request)
     {
-//        dd('aqui');
+//        dd($request);
         try {
+            $teamDTO = PlayChampionshipDTO::fromRequest($request);
+            $resp = $this->playChampionshipService->create($teamDTO);
+            if ($resp === null) return HttpResponseHelper::serverError();
+            return HttpResponseHelper::ok([], Response::HTTP_CREATED);
 
-
-//            $teamDTO = ChampionshipDTO::fromRequest($request);
-//
-//
-//                $resp = $this->championshipService->create($teamDTO);
-//                if ($resp === null) return HttpResponseHelper::serverError();
-                return HttpResponseHelper::ok([], Response::HTTP_CREATED);
-
-
-
-        } catch (ValidationException $e) {
-            $errors = $e->errors();
-            return HttpResponseHelper::badRequest($errors);
         } catch (\Exception $e) {
             return HttpResponseHelper::serverError();
         }
