@@ -23,7 +23,7 @@ use OpenApi\Annotations as OA;
  *         description="Lista de campeonatos",
  *         @OA\JsonContent(
  *             type="array",
- *             @OA\Items(ref="#/components/schemas/Championship")
+ *             @OA\Items(ref="#/components/schemas/ChampionshipArray")
  *         )
  *     )
  * )
@@ -64,6 +64,38 @@ class Championship
 /**
  * @OA\Schema(
  *     schema="Championship",
+ *     type="object",
+ *     title="Championship",
+ *     required={"id", "name", "created_at", "updated_at"},
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         description="ID do campeonato"
+ *     ),
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="Nome do campeonato"
+ *     ),
+ *     @OA\Property(
+ *         property="created_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Data de criação do campeonato"
+ *     ),
+ *     @OA\Property(
+ *         property="updated_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Data de atualização do campeonato"
+ *     )
+ * )
+ */
+
+
+/**
+ * @OA\Schema(
+ *     schema="ChampionshipArray",
  *     type="object",
  *     title="Championship",
  *     required={"id", "name", "created_at", "updated_at"},
