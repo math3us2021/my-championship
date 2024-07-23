@@ -1,11 +1,248 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API de Exemplo",
-        "description": "Documentação da API de Exemplo",
+        "title": "MyChampionship",
+        "description": "Documentação da API my-championship, simulação de campeonato",
         "version": "1.0.0"
     },
     "paths": {
+        "/api/championship": {
+            "get": {
+                "tags": [
+                    "Championship"
+                ],
+                "summary": "Obter campeonato por ID",
+                "description": "Retorna um campeonato específico",
+                "operationId": "getChampionshipAll",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do campeonato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Championship"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid param: Championship not found."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Championship"
+                ],
+                "summary": "Atualizar um campeonato existente",
+                "description": "Atualiza as informações de um campeonato existente",
+                "operationId": "updateChampionship",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do campeonato",
+                                        "type": "string",
+                                        "example": "Campeone"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Campeonato atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID do campeonato",
+                                            "type": "integer",
+                                            "example": 9
+                                        },
+                                        "name": {
+                                            "description": "Nome do campeonato",
+                                            "type": "string",
+                                            "example": "Campeone"
+                                        },
+                                        "created_at": {
+                                            "description": "Data de criação do campeonato",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-23T01:27:39.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "description": "Data de atualização do campeonato",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-23T01:27:39.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Campeonato não encontrado"
+                    },
+                    "400": {
+                        "description": "Dados inválidos para a atualização do campeonato"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Championship"
+                ],
+                "summary": "Criar um novo campeonato",
+                "description": "Cria um novo campeonato com as informações fornecidas",
+                "operationId": "createChampionship",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do campeonato",
+                                        "type": "string",
+                                        "example": "Campeone"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Campeonato criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID do campeonato",
+                                            "type": "integer",
+                                            "example": 9
+                                        },
+                                        "name": {
+                                            "description": "Nome do campeonato",
+                                            "type": "string",
+                                            "example": "Campeone"
+                                        },
+                                        "created_at": {
+                                            "description": "Data de criação do campeonato",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-23T01:27:39.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "description": "Data de atualização do campeonato",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos para a criação do campeonato"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Championship"
+                ],
+                "summary": "Excluir campeonato por ID",
+                "description": "Remove um campeonato específico da lista",
+                "operationId": "deleteChampionship",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Campeonato excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Campeonato excluído com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Campeonato não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Campeonato não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/championship/{id}": {
             "get": {
                 "tags": [
@@ -41,24 +278,360 @@
                 }
             }
         },
-        "/api/users": {
+        "/api/championship-play": {
             "get": {
                 "tags": [
-                    "Teams"
+                    "PlayChampionship"
                 ],
-                "summary": "Obter lista de times",
-                "description": "Retorna uma lista de times",
-                "operationId": "getUsersList",
+                "summary": "Obter todas as partidas do campeonato",
+                "description": "Retorna uma lista de todas as partidas do campeonato",
+                "operationId": "getPlayChampionshipAll",
                 "responses": {
                     "200": {
-                        "description": "Lista de usuários",
+                        "description": "Dados das partidas do campeonato",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Teams"
+                                        "$ref": "#/components/schemas/PlayChampionship"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetro inválido"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "PlayChampionship"
+                ],
+                "summary": "Criar uma nova partida",
+                "description": "Cria uma nova partida com as informações fornecidas",
+                "operationId": "createPlayChampionship",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "championship_id",
+                                    "teams"
+                                ],
+                                "properties": {
+                                    "championship_id": {
+                                        "description": "ID do campeonato",
+                                        "type": "integer"
+                                    },
+                                    "teams": {
+                                        "description": "IDs dos times participantes",
+                                        "type": "array",
+                                        "items": {
+                                            "description": "ID do time",
+                                            "type": "integer",
+                                            "example": [
+                                                1,
+                                                2,
+                                                3,
+                                                4,
+                                                5,
+                                                6,
+                                                7,
+                                                8
+                                            ]
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Partida criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlayChampionship"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos para a criação da partida"
+                    }
+                }
+            }
+        },
+        "/api/championship-play/{id}": {
+            "get": {
+                "tags": [
+                    "PlayChampionship"
+                ],
+                "summary": "Obter partida por ID",
+                "description": "Retorna uma partida específica do campeonato",
+                "operationId": "getPlayChampionshipById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados da partida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlayChampionship"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetro inválido"
+                    },
+                    "404": {
+                        "description": "Partida não encontrada"
+                    }
+                }
+            }
+        },
+        "/api/teams": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Obter time por ID",
+                "description": "Retorna um time específico",
+                "operationId": "getTeamsAll",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do time",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Teams"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid param: Championship not found."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Atualizar um time existente",
+                "description": "Atualiza as informações de um time existente",
+                "operationId": "updateTeams",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do time",
+                                        "type": "string",
+                                        "example": "Campeone"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Time atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID do time",
+                                            "type": "integer",
+                                            "example": 9
+                                        },
+                                        "name": {
+                                            "description": "Nome do time",
+                                            "type": "string",
+                                            "example": "Campeone"
+                                        },
+                                        "created_at": {
+                                            "description": "Data de criação do time",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-23T01:27:39.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "description": "Data de atualização do time",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-23T01:27:39.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Time não encontrado"
+                    },
+                    "400": {
+                        "description": "Dados inválidos para a atualização do time"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Criar um novo time",
+                "description": "Cria um novo time com as informações fornecidas",
+                "operationId": "createTeams",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Nome do time",
+                                        "type": "string",
+                                        "example": "Campeone"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Time criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID do time",
+                                            "type": "integer",
+                                            "example": 9
+                                        },
+                                        "name": {
+                                            "description": "Nome do time",
+                                            "type": "string",
+                                            "example": "Campeone"
+                                        },
+                                        "created_at": {
+                                            "description": "Data de criação do time",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-07-23T01:27:39.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "description": "Data de atualização do time",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos para a criação do time"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Excluir time por ID",
+                "description": "Remove um time específico da lista",
+                "operationId": "deleteTeams",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Time excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Time excluído com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Time não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Time não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -66,27 +639,37 @@
                 }
             }
         },
-        "/api/users/{id}": {
+        "/api/teams/{id}": {
             "get": {
                 "tags": [
-                    "Users"
+                    "Teams"
                 ],
-                "summary": "Obter lista de usuários",
-                "description": "Retorna uma lista de usuários",
-                "operationId": "getUserByID",
+                "summary": "Obter time por ID",
+                "description": "Retorna um time específico",
+                "operationId": "getTeamsById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Lista de usuários",
+                        "description": "Dados do time",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/User"
-                                    }
+                                    "$ref": "#/components/schemas/Championship"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Invalid param: Championship not found."
                     }
                 }
             }
@@ -124,48 +707,119 @@
                 },
                 "type": "object"
             },
-            "Teams": {
-                "title": "User",
+            "PlayChampionship": {
+                "title": "PlayChampionship",
                 "required": [
                     "id",
-                    "name",
-                    "email"
+                    "championship_id",
+                    "stage",
+                    "team1_id",
+                    "team2_id",
+                    "team1_score",
+                    "team2_score",
+                    "match_winner",
+                    "team1_points",
+                    "team2_points",
+                    "match_date"
                 ],
                 "properties": {
                     "id": {
-                        "description": "ID do usuário",
+                        "description": "ID da partida",
                         "type": "integer"
                     },
-                    "name": {
-                        "description": "Nome do usuário",
-                        "type": "string"
+                    "championship_id": {
+                        "description": "ID do campeonato",
+                        "type": "integer"
                     },
-                    "email": {
-                        "description": "Email do usuário",
-                        "type": "string"
+                    "stage": {
+                        "description": "Fase da partida",
+                        "type": "string",
+                        "example": "quartas de final"
+                    },
+                    "team1_id": {
+                        "description": "ID do time 1",
+                        "type": "integer"
+                    },
+                    "team2_id": {
+                        "description": "ID do time 2",
+                        "type": "integer"
+                    },
+                    "team1_score": {
+                        "description": "Pontuação do time 1",
+                        "type": "integer"
+                    },
+                    "team2_score": {
+                        "description": "Pontuação do time 2",
+                        "type": "integer"
+                    },
+                    "team1_penalties": {
+                        "description": "Penalidades do time 1",
+                        "type": "integer",
+                        "example": "null"
+                    },
+                    "team2_penalties": {
+                        "description": "Penalidades do time 2",
+                        "type": "integer",
+                        "example": "null"
+                    },
+                    "match_winner": {
+                        "description": "ID do time vencedor",
+                        "type": "integer"
+                    },
+                    "team1_points": {
+                        "description": "Pontos do time 1",
+                        "type": "integer"
+                    },
+                    "team2_points": {
+                        "description": "Pontos do time 2",
+                        "type": "integer"
+                    },
+                    "match_date": {
+                        "description": "Data e hora da partida",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "null"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "null"
                     }
                 },
                 "type": "object"
             },
-            "User": {
-                "title": "User",
+            "Teams": {
+                "title": "Championship",
                 "required": [
                     "id",
                     "name",
-                    "email"
+                    "created_at",
+                    "updated_at"
                 ],
                 "properties": {
                     "id": {
-                        "description": "ID do usuário",
+                        "description": "ID do time",
                         "type": "integer"
                     },
                     "name": {
-                        "description": "Nome do usuário",
+                        "description": "Nome do time",
                         "type": "string"
                     },
-                    "email": {
-                        "description": "Email do usuário",
-                        "type": "string"
+                    "created_at": {
+                        "description": "Data de criação do time",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização do time",
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -178,12 +832,12 @@
             "description": "Championship"
         },
         {
-            "name": "Teams",
-            "description": "Teams"
+            "name": "PlayChampionship",
+            "description": "PlayChampionship"
         },
         {
-            "name": "Users",
-            "description": "Users"
+            "name": "Teams",
+            "description": "Teams"
         }
     ]
 }

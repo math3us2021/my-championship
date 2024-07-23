@@ -1,6 +1,7 @@
-# Meu Campeonato API
+# My Championship API
 
-Meu Campeonato API é uma aplicação desenvolvida em Laravel usando Laravel Sail que simula um campeonato de futebol eliminatório com oito times. A aplicação permite gerenciar times e campeonatos, além de gerar e simular jogos.
+My-championship é uma API desenvolvida em Laravel que simula um campeonato eliminatório com oito times. 
+A aplicação permite gerenciar times e campeonatos, além de gerar e simular jogos.
 
 ## Funcionalidades
 
@@ -14,12 +15,20 @@ Meu Campeonato API é uma aplicação desenvolvida em Laravel usando Laravel Sai
      ```bash
   http://localhost:8000/api/documentation
 
+#### Estruturas:
+- Utilizei algumas camadas do Clean Architecture, para separa claramente as camadas para uma melhor organização do código. A API também realiza consultas a um script Python para simular os resultados dos jogos e inclui testes específicos no entrypoint teams para garantir a funcionalidade adequada.
+
+#### Ambientes:
+- Laravel no docker (sail)
+
+#### Documentação:
+- Biblioteca l5-Swagger
+
 ## Instalação
 
 ### Pré-requisitos
 
 - Docker
-- Docker Compose
 
 ### Passos
 
