@@ -36,7 +36,7 @@ use OpenApi\Annotations as OA;
  *         operationId="createPlayChampionship",
  *         tags={"PlayChampionship"},
  *         summary="Criar uma nova partida",
- *         description="Cria uma nova partida com as informações fornecidas",
+ *         description="Cria uma novo campeonato",
  *         @OA\RequestBody(
  *             required=true,
  *             @OA\MediaType(
@@ -78,7 +78,7 @@ use OpenApi\Annotations as OA;
  *     @OA\Get(
  *         operationId="getPlayChampionshipById",
  *         tags={"PlayChampionship"},
- *         summary="Obter partida por ID",
+ *         summary="Obter partida por ID do campeonato",
  *         description="Retorna uma partida específica do campeonato",
  *         @OA\Parameter(
  *             name="id",

@@ -310,7 +310,7 @@
                     "PlayChampionship"
                 ],
                 "summary": "Criar uma nova partida",
-                "description": "Cria uma nova partida com as informações fornecidas",
+                "description": "Cria uma novo campeonato",
                 "operationId": "createPlayChampionship",
                 "requestBody": {
                     "required": true,
@@ -372,7 +372,7 @@
                 "tags": [
                     "PlayChampionship"
                 ],
-                "summary": "Obter partida por ID",
+                "summary": "Obter partida por ID do campeonato",
                 "description": "Retorna uma partida específica do campeonato",
                 "operationId": "getPlayChampionshipById",
                 "parameters": [
