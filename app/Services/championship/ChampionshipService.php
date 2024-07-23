@@ -35,7 +35,7 @@ class ChampionshipService implements ChampionshipServiceInterface
         return $this->teamRepository->update($id, $data);
     }
 
-    public function delete(string $id): bool
+    public function delete(string $id): ?bool
     {
         return $this->teamRepository->delete($id);
     }

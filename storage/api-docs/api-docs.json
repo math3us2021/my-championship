@@ -1,0 +1,189 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Exemplo",
+        "description": "Documentação da API de Exemplo",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/championship/{id}": {
+            "get": {
+                "tags": [
+                    "Championship"
+                ],
+                "summary": "Obter campeonato por ID",
+                "description": "Retorna um campeonato específico",
+                "operationId": "getChampionshipById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do campeonato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Championship"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid param: Championship not found."
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Teams"
+                ],
+                "summary": "Obter lista de times",
+                "description": "Retorna uma lista de times",
+                "operationId": "getUsersList",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Teams"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Obter lista de usuários",
+                "description": "Retorna uma lista de usuários",
+                "operationId": "getUserByID",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Championship": {
+                "title": "Championship",
+                "required": [
+                    "id",
+                    "name",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID do campeonato",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nome do campeonato",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Data de criação do campeonato",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização do campeonato",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Teams": {
+                "title": "User",
+                "required": [
+                    "id",
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID do usuário",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nome do usuário",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "required": [
+                    "id",
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID do usuário",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Nome do usuário",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Championship",
+            "description": "Championship"
+        },
+        {
+            "name": "Teams",
+            "description": "Teams"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        }
+    ]
+}

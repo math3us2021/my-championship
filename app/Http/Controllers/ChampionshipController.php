@@ -24,7 +24,7 @@ class ChampionshipController extends Controller
         try {
             if ($id) {
                 $dataTeam = $this->championshipService->get($id);
-                if ($dataTeam === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+                if ($dataTeam === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Championship not found'));
             } else {
                 $dataTeam = $this->championshipService->get();
             }
