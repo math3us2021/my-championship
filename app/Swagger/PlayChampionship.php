@@ -35,8 +35,8 @@ use OpenApi\Annotations as OA;
  *     @OA\Post(
  *         operationId="createPlayChampionship",
  *         tags={"PlayChampionship"},
- *         summary="Criar uma nova partida",
- *         description="Cria uma novo campeonato",
+ *         summary="Cria um novo campeonato",
+ *         description="Cria um novo campeonato",
  *         @OA\RequestBody(
  *             required=true,
  *             @OA\MediaType(
