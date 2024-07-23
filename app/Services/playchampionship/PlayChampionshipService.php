@@ -17,6 +17,15 @@ class PlayChampionshipService implements PlayChampionshipServiceInterface
         $this->playChampionshipRepository = $playChampionshipRepository;
     }
 
+    public function get(string $id = null): ?array
+    {
+        if ($id) {
+            return $this->playChampionshipRepository->getById($id);
+        }
+
+        return $this->playChampionshipRepository->getAll();
+    }
+
     public function create(PlayChampionshipDTO $data): array
     {
         $shuffleTeams = new ChampionshipDraw();

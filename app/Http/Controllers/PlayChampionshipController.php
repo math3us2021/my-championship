@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\PlayChampionshipDTO;
+use App\Exceptions\InvalidParamsExceptions;
 use App\Helpers\HttpResponseHelper;
 use App\Http\Protocols\playchampioship\PlayChampionshipServiceInterface;
 use App\Http\Requests\StoreChampionshipRequest;
@@ -17,10 +18,24 @@ class PlayChampionshipController extends Controller
     {
         $this->playChampionshipService = $playChampionshipService;
     }
-
-    public function index(StoreChampionshipRequest $request)
+    public function index($id = null)
     {
-//        dd($request);
+        try {
+            if ($id) {
+                $dataTeam = $this->playChampionshipService->get($id);
+                if ($dataTeam === null) return HttpResponseHelper::badRequest(new InvalidParamsExceptions('Team not found'));
+            } else {
+                $dataTeam = $this->playChampionshipService->get();
+            }
+            return HttpResponseHelper::ok($dataTeam,Response::HTTP_OK );
+        } catch (Exception $e) {
+            return HttpResponseHelper::serverError();
+        }
+    }
+
+
+    public function create(StoreChampionshipRequest $request)
+    {
         try {
             $teamDTO = PlayChampionshipDTO::fromRequest($request);
             $resp = $this->playChampionshipService->create($teamDTO);

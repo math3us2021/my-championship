@@ -2,12 +2,23 @@
 
 namespace App\Repositories\playchampionship;
 
+use App\Models\Championship;
 use App\Models\MatchesPlayed;
 use App\Repositories\Protocols\PlayChampionshipRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
 class PlayChampionshipRepository implements PlayChampionshipRepositoryInterface
 {
+    public function getAll(): array
+    {
+        return MatchesPlayed::all()->toArray();
+    }
+
+    public function getById(string $id): ?array
+    {
+        $team = DB::table('matches_played')->where('championship_id', $id)->get();
+        return $team?->toArray();
+    }
 
     public function createMatches(array $data): ?bool
     {
