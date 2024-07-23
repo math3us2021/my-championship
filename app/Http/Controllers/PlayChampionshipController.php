@@ -25,7 +25,7 @@ class PlayChampionshipController extends Controller
             $teamDTO = PlayChampionshipDTO::fromRequest($request);
             $resp = $this->playChampionshipService->create($teamDTO);
             if ($resp === null) return HttpResponseHelper::serverError();
-            return HttpResponseHelper::ok([], Response::HTTP_CREATED);
+            return HttpResponseHelper::ok($resp, Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
             return HttpResponseHelper::serverError();

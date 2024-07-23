@@ -5,7 +5,6 @@ namespace App\Services\playchampionship;
 use App\DTO\PlayChampionshipDTO;
 use App\Helpers\ChampionshipDraw;
 use App\Http\Protocols\playchampioship\PlayChampionshipServiceInterface;
-use App\Models\MatchesPlayed;
 use App\Repositories\Protocols\PlayChampionshipRepositoryInterface;
 
 
@@ -20,40 +19,28 @@ class PlayChampionshipService implements PlayChampionshipServiceInterface
 
     public function create(PlayChampionshipDTO $data): array
     {
-        ///criar vinculo com campeonato com os times
-
-
-        /// separar os jogos
         $shuffleTeams = new ChampionshipDraw();
         $quarterfinals = $shuffleTeams->handle($data->teams);
-        $this->saveMatches($quarterfinals, $data->championshipId, 'quartas de final');
-
         $semifinals = $shuffleTeams->selectWinners($quarterfinals);
-        $semifinalsGame = $shuffleTeams->handle($semifinals);
-        $this->playChampionshipRepository->createMatches($semifinalsGame);
+        $this->saveMatches($quarterfinals, intval($data->championshipId), 'quartas de final', $semifinals);
 
+        $semifinalsGame = $shuffleTeams->handle($semifinals);
         $final = $shuffleTeams->selectWinners($semifinalsGame);
+        $this->saveMatches($semifinalsGame, intval($data->championshipId), 'semifinais', $final);
+
         $finalGames = $shuffleTeams->handle($final, true);
         $champion = $this->verifyAtie($finalGames, $data, $shuffleTeams);
-        $this->playChampionshipRepository->createMatches($finalGames);
+        $this->saveMatches($finalGames, intval($data->championshipId), 'final', $champion);
 
+//        dd($semifinals, $final, $finalGames, $champion);
 
-        dd($semifinals, $final, $finalGames, $champion);
-
-        ///FINAL NÃO TEM PENALTIS
-
-        ///salvar informações dos jogos
-
-
-        /// pontuação
-
-        ///  retornar campeao
-
-//        $championship = Championship::findOrFail($data->championshipId);
-////        dd($championship, $data->teams );
-//        $championship->teams()->assign($data->teams);
-//        dd($data);
-        return [];
+        $getCampeonato = $this->playChampionshipRepository->getChampionship($data->championshipId);
+//        dd($getCampeonato);
+        return [
+            'championship_id' => $data->championshipId,
+            'team_winner' => $champion,
+            'championship_matches' => $getCampeonato,
+        ];
     }
 
     private function verifyAtie(array $result, PlayChampionshipDTO $data, ChampionshipDraw $shuffleTeams)
@@ -61,18 +48,19 @@ class PlayChampionshipService implements PlayChampionshipServiceInterface
         $team1 = $result[0]['team1_score'];
         $team2 = $result[0]['team2_score'];
         if ($team1 == $team2) {
-            $team1Points = $points[$team1] ?? 0;
-            $team2Points = $points[$team2] ?? 0;
+
+            $team1Points = $this->playChampionshipRepository->getPoints($data->championshipId, $result[0]['team1']);
+            $team2Points = $this->playChampionshipRepository->getPoints($data->championshipId, $result[0]['team2']);
 
             if ($team1Points > $team2Points) {
-                return $team1;
+                return [$result[0]['team1']];
             } elseif ($team2Points > $team1Points) {
-                return $team2;
+                return [$result[0]['team2']];
             } else {
                 return $this->verifyRegistration($team1, $team2, $data->teams);
             }
         } else {
-            $shuffleTeams->selectWinners($result);
+            return $shuffleTeams->selectWinners($result);
         }
     }
 
@@ -88,9 +76,9 @@ class PlayChampionshipService implements PlayChampionshipServiceInterface
         return $team1Index < $team2Index ? $team1 : $team2;
     }
 
-    private function saveMatches(array $data, string $championshipId, string $stage)
+    private function saveMatches(array $data, int $championshipId, string $stage, array $semifinals)
     {
-        foreach ($data as $match) {
+        foreach ($data as $key => $match) {
             $pointTeam1 = $this->poinsGenerate($match['team1_score'], $match['team2_score']);
             $pointTeam2 = $this->poinsGenerate($match['team2_score'], $match['team1_score']);
             $team1_penalties = empty($match['penalties']) ? null : $match['penalties']['team1_penalties'];
@@ -105,11 +93,16 @@ class PlayChampionshipService implements PlayChampionshipServiceInterface
                 'team2_score' => $match['team2_score'],
                 'team1_penalties' => $team1_penalties,
                 'team2_penalties' => $team2_penalties,
+                'match_winner' => $semifinals[$key],
                 'team1_points' => $pointTeam1,
                 'team2_points' => $pointTeam2,
                 'match_date' => now()->format('Y-m-d H:i:s'),
             ];
-            return $this->playChampionshipRepository->createMatches($dataMatches);
+
+            $resp = $this->playChampionshipRepository->createMatches($dataMatches);
+            if (!$resp) {
+                throw new \Exception('Error saving match data.');
+            }
         }
     }
 

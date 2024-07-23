@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class MatchesPlayed extends Model
 {
     use HasFactory;
+    protected $table = 'matches_played';
     protected $fillable = [
+        'id',
         'championship_id',
         'stage',
         'team1_id',
@@ -17,10 +19,12 @@ class MatchesPlayed extends Model
         'team2_score',
         'team1_penalties',
         'team2_penalties',
+        'match_winner',
         'team1_points',
         'team2_points',
         'match_date'
     ];
+    public $timestamps = false;
 
     public function championship()
     {
