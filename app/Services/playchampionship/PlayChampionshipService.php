@@ -6,6 +6,7 @@ use App\DTO\PlayChampionshipDTO;
 use App\Helpers\ChampionshipDraw;
 use App\Http\Protocols\playchampioship\PlayChampionshipServiceInterface;
 use App\Repositories\Protocols\PlayChampionshipRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 
 class PlayChampionshipService implements PlayChampionshipServiceInterface
@@ -28,28 +29,27 @@ class PlayChampionshipService implements PlayChampionshipServiceInterface
 
     public function create(PlayChampionshipDTO $data): array
     {
-        $shuffleTeams = new ChampionshipDraw();
-        $quarterfinals = $shuffleTeams->handle($data->teams);
-        $semifinals = $shuffleTeams->selectWinners($quarterfinals);
-        $this->saveMatches($quarterfinals, intval($data->championshipId), 'quartas de final', $semifinals);
+        return DB::transaction(function () use ($data) {
+            $shuffleTeams = new ChampionshipDraw();
+            $quarterfinals = $shuffleTeams->handle($data->teams);
+            $semifinals = $shuffleTeams->selectWinners($quarterfinals);
+            $this->saveMatches($quarterfinals, intval($data->championshipId), 'quartas de final', $semifinals);
 
-        $semifinalsGame = $shuffleTeams->handle($semifinals);
-        $final = $shuffleTeams->selectWinners($semifinalsGame);
-        $this->saveMatches($semifinalsGame, intval($data->championshipId), 'semifinais', $final);
+            $semifinalsGame = $shuffleTeams->handle($semifinals);
+            $final = $shuffleTeams->selectWinners($semifinalsGame);
+            $this->saveMatches($semifinalsGame, intval($data->championshipId), 'semifinais', $final);
 
-        $finalGames = $shuffleTeams->handle($final, true);
-        $champion = $this->verifyAtie($finalGames, $data, $shuffleTeams);
-        $this->saveMatches($finalGames, intval($data->championshipId), 'final', $champion);
+            $finalGames = $shuffleTeams->handle($final, true);
+            $champion = $this->verifyAtie($finalGames, $data, $shuffleTeams);
+            $this->saveMatches($finalGames, intval($data->championshipId), 'final', $champion);
 
-//        dd($semifinals, $final, $finalGames, $champion);
-
-        $getCampeonato = $this->playChampionshipRepository->getChampionship($data->championshipId);
-//        dd($getCampeonato);
-        return [
-            'championship_id' => $data->championshipId,
-            'team_winner' => $champion,
-            'championship_matches' => $getCampeonato,
-        ];
+            $getCampeonato = $this->playChampionshipRepository->getChampionship($data->championshipId);
+            return [
+                'championship_id' => $data->championshipId,
+                'team_winner' => $champion,
+                'championship_matches' => $getCampeonato,
+            ];
+        });
     }
 
     private function verifyAtie(array $result, PlayChampionshipDTO $data, ChampionshipDraw $shuffleTeams)

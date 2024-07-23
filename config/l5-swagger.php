@@ -16,7 +16,7 @@ return [
             ],
             'paths' => [
                 'docs' => storage_path('api-docs'),
-                'annotations' => base_path('app/Swagger/swagger.yaml'),
+                'annotations' => base_path('app/Swagger'),
 
                 /*
                  * Edit to include full URL in ui for assets
